@@ -11,6 +11,13 @@ public class DiagonalWinningStrategy implements WinningStrategy {
     private Map<Symbol, Integer> leftDiagonalMap = new HashMap<>();
     private Map<Symbol, Integer> rightDiagonalMap = new HashMap<>();
 
+    public DiagonalWinningStrategy(){}
+
+    private DiagonalWinningStrategy(DiagonalWinningStrategy diagonalWinningStrategy){
+        leftDiagonalMap.putAll(diagonalWinningStrategy.leftDiagonalMap);
+        rightDiagonalMap.putAll(diagonalWinningStrategy.rightDiagonalMap);
+    }
+
     @Override
     public boolean checkWinner(Move move, Board board) {
         int row = move.getCell().getRow();
@@ -47,5 +54,10 @@ public class DiagonalWinningStrategy implements WinningStrategy {
         }
 
         return false;
+    }
+
+    @Override
+    public DiagonalWinningStrategy clone() throws CloneNotSupportedException {
+        return new DiagonalWinningStrategy(this);
     }
 }

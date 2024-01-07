@@ -11,6 +11,14 @@ import java.util.Map;
 public class RowWinningStrategy implements WinningStrategy {
     private Map<Integer, Map<Symbol, Integer>> rowMaps = new HashMap<>();
 
+    public RowWinningStrategy(){}
+
+    private RowWinningStrategy(RowWinningStrategy rowWinningStrategy){
+        for(Map.Entry<Integer, Map<Symbol, Integer>> en : rowWinningStrategy.rowMaps.entrySet()){
+            rowMaps.put(en.getKey(), new HashMap<>(en.getValue()));
+        }
+    }
+
     @Override
     public boolean checkWinner(Move move, Board board) {
         int row = move.getCell().getRow();
@@ -30,5 +38,10 @@ public class RowWinningStrategy implements WinningStrategy {
         }
 
         return currentRowMap.get(symbol) == board.getDimension();
+    }
+
+    @Override
+    public RowWinningStrategy clone() throws CloneNotSupportedException {
+        return new RowWinningStrategy(this);
     }
 }

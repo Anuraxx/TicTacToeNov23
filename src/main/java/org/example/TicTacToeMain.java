@@ -15,6 +15,8 @@ import java.util.Scanner;
 
 public class TicTacToeMain {
     public static void main(String[] args) throws Exception {
+        Scanner scanner = new Scanner(System.in);
+
         GameController gameController = new GameController();
         //System.out.println("Enter the game dimension");
         int dimension = 3;
@@ -36,17 +38,22 @@ public class TicTacToeMain {
         winningStrategies.add(new DiagonalWinningStrategy());
 
         //Start the game.
-        Game game = gameController.startGame(dimension, players, winningStrategies);
+        Game game = gameController.startGame(1, dimension, players, winningStrategies);
 
         //Start playing the game.
         while (gameController.getGameState(game).equals(GameState.IN_PROGRESS)) {
             //Display the board.
             System.out.println("This is the current state of Board");
             gameController.displayBoard(game);
-
-            //Do you want to UNDO ? If yes, call the UNDO functionality else call the makeMove.
-
             gameController.makeMove(game);
+            gameController.displayBoard(game);
+            //Do you want to UNDO ? If yes, call the UNDO functionality else call the makeMove.
+            System.out.println("Do you want to undo ? [Y/N]");
+            char opt = scanner.next().toUpperCase().charAt(0);
+            if(opt=='Y'){
+                game = gameController.undo(game);
+                //continue;
+            }
         }
 
         if (gameController.getGameState(game).equals(GameState.ENDED)) {

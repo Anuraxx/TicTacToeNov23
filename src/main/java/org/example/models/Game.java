@@ -5,8 +5,11 @@ import org.example.strategies.winningStrategies.WinningStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class Game {
+public class Game implements Cloneable{
+
+    private Integer id;
     private Board board;
     private List<Player> players;
     private GameState gameState;
@@ -72,6 +75,28 @@ public class Game {
         this.moves = new ArrayList<>();
         this.winningStrategies = winningStrategies;
         this.players = players;
+    }
+
+    private Game(Game game) throws CloneNotSupportedException {
+        this.id = game.id;
+        this.board = game.board.clone();
+        this.gameState = game.gameState;
+        this.nextMovePlayerIndex = game.nextMovePlayerIndex;
+        this.moves = new ArrayList<>();
+        this.moves.addAll(game.moves);
+        this.winningStrategies = new ArrayList<>();
+        for(WinningStrategy winningStrategy : game.winningStrategies){
+            this.winningStrategies.add(winningStrategy.clone());
+        }
+        this.players = game.players;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Board getBoard() {
@@ -185,5 +210,10 @@ public class Game {
             //Game has DRAWN
             gameState = GameState.DRAW;
         }
+    }
+
+    @Override
+    public Game clone() throws CloneNotSupportedException {
+        return new Game(this);
     }
 }

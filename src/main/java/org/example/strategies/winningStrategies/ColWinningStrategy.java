@@ -9,6 +9,15 @@ import java.util.Map;
 
 public class ColWinningStrategy implements WinningStrategy {
     private Map<Integer, Map<Symbol, Integer>> colMaps = new HashMap<>();
+
+    public ColWinningStrategy(){};
+
+    private ColWinningStrategy(ColWinningStrategy colWinningStrategy){
+        for(Map.Entry<Integer, Map<Symbol, Integer>> en : colWinningStrategy.colMaps.entrySet()){
+            colMaps.put(en.getKey(), new HashMap<>(en.getValue()));
+        }
+    }
+
     @Override
     public boolean checkWinner(Move move, Board board) {
         int col = move.getCell().getCol();
@@ -28,5 +37,10 @@ public class ColWinningStrategy implements WinningStrategy {
         }
 
         return currentColMap.get(symbol) == board.getDimension();
+    }
+
+    @Override
+    public ColWinningStrategy clone() throws CloneNotSupportedException {
+        return new ColWinningStrategy(this);
     }
 }

@@ -1,9 +1,11 @@
 package org.example.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class Board {
+public class Board implements Cloneable{
     private int dimension;
     private List<List<Cell>> board;
 
@@ -37,17 +39,35 @@ public class Board {
         }
     }
 
+    private Board(Board board) throws CloneNotSupportedException {
+        this.dimension = board.dimension;
+        this.board = new ArrayList<>();
+        //this.board.addAll(board.board);
+        for (int i = 0; i < dimension; i++) {
+            List<Cell> row = new ArrayList<>();
+            for (int j = 0; j < dimension; j++) {
+                row.add(board.board.get(i).get(j).clone());
+            }
+            this.board.add(row);
+        }
+    }
+
     public void displayBoard() {
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
                 Cell cell = board.get(i).get(j);
                 if (cell.getCellState().equals(CellState.EMPTY)) {
-                    System.out.print("|  |");
+                    System.out.print("| |");
                 } else {
                     System.out.print("|" + cell.getPlayer().getSymbol().getSymbol() + "|");
                 }
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public Board clone() throws CloneNotSupportedException {
+        return new Board(this);
     }
 }

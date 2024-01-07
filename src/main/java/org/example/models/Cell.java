@@ -1,6 +1,6 @@
 package org.example.models;
 
-public class Cell {
+public class Cell implements Cloneable{
     private int row;
     private int col;
     private Player player;
@@ -10,6 +10,13 @@ public class Cell {
         this.row = row;
         this.col = col;
         this.cellState = CellState.EMPTY;
+    }
+
+    private Cell(Cell cell){
+        this.row = cell.row;
+        this.col = cell.col;
+        this.player = cell.player;
+        this.cellState = cell.cellState;
     }
 
     public int getRow() {
@@ -42,5 +49,10 @@ public class Cell {
 
     public void setCellState(CellState cellState) {
         this.cellState = cellState;
+    }
+
+    @Override
+    public Cell clone() throws CloneNotSupportedException {
+        return new Cell(this);
     }
 }
